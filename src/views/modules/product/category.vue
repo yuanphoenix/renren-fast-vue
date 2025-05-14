@@ -40,12 +40,37 @@ export default {
         },
 
         append(data) {
-           
+            const labelName = prompt('请输入节点名称:', 'testtest');
+            if (labelName === null || !labelName) return; // 用户点击了取消
+
+            const newChild = {
+                name: labelName || '未命名节点',  // 处理空输入
+                parentCid: data.catId
+            };
+
+            this.$http({
+                url: this.$http.adornUrl('/product/category/save', 'gateway'),
+                method: 'post',
+                data: this.$http.adornData(newChild, false)
+            }).then(({ data }) => {
+                if (data && data.code === 200) {
+                    this.$message({
+                        message: '操作成功',
+                        type: 'success',
+                        duration: 1500,
+                        onClose: () => {
+                            this.getMenus()
+                        }
+                    })
+                } else {
+                    this.$message.error(data.msg)
+                }
+            })
         },
 
         remove(node, data) {
             this.$http({
-                url: this.$http.adornUrl('/product/category/delete','gateway'),
+                url: this.$http.adornUrl('/product/category/delete', 'gateway'),
                 method: 'post',
                 data: this.$http.adornData(data, false)
             }).then(({ data }) => {
