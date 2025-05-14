@@ -1,12 +1,15 @@
 <template>
     <div>
-        <el-tree :data="menus" :props="defaultProps" show-checkbox node-key="catId" default-expand-all
-            :expand-on-click-node="false">
+        <el-tree :data="menus" :props="defaultProps" show-checkbox node-key="catId" default-expand-all draggable
+            :expand-on-click-node="false" :allow-drop="allowDrop" @node-drop="handleDrop">
             <span class="custom-tree-node" slot-scope="{ node, data }">
                 <span>{{ node.label }}</span>
                 <span>
                     <el-button type="text" size="mini" @click="() => append(data)">
                         添加
+                    </el-button>
+                    <el-button type="text" size="mini" @click="() => edit(data)">
+                        修改
                     </el-button>
                     <el-button v-if="!data.children.length" type="text" size="mini" @click="() => remove(node, data)">
                         删除
@@ -39,8 +42,33 @@ export default {
             console.log(data);
         },
 
+        edit(data) {
+            const labelName = prompt('请输入节点名称:', '');
+            if (labelName === null || !labelName) return; // 用户点击了取消
+            data.name = labelName
+
+            this.$http({
+                url: this.$http.adornUrl('/product/category/update', 'gateway'),
+                method: 'post',
+                data: this.$http.adornData(data, false)
+            }).then(({ data }) => {
+                if (data && data.code === 200) {
+                    this.$message({
+                        message: '操作成功',
+                        type: 'success',
+                        duration: 1500,
+                        onClose: () => {
+                            this.getMenus()
+                        }
+                    })
+                } else {
+                    this.$message.error(data.msg)
+                }
+            })
+        },
+
         append(data) {
-            const labelName = prompt('请输入节点名称:', 'testtest');
+            const labelName = prompt('请输入节点名称:', '');
             if (labelName === null || !labelName) return; // 用户点击了取消
 
             const newChild = {
@@ -68,6 +96,31 @@ export default {
             })
         },
 
+        handleDrop(draggingNode, dropNode, dropType, ev) {
+            console.log(draggingNode.label, dropNode.label, dropType)
+            this.$http({
+                url: this.$http.adornUrl('/product/category/sort', 'gateway'),
+                method: 'post',
+                data: this.$http.adornData({ draggingNodeId: draggingNode.data.catId, dropNodeId: dropNode.data.catId, dropType: dropType }, false)
+            }).then(({ data }) => {
+                if (data && data.code === 200) {
+                    this.$message({
+                        message: '操作成功',
+                        type: 'success',
+                        duration: 1500,
+                        onClose: () => {
+                            this.getMenus()
+                        }
+                    })
+                } else {
+                    this.$message.error(data.msg)
+                }
+            })
+        },
+
+        allowDrop(draggingNode, dropNode, type) {
+            return true
+        },
         remove(node, data) {
             this.$http({
                 url: this.$http.adornUrl('/product/category/delete', 'gateway'),
