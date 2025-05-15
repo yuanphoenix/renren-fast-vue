@@ -1,7 +1,10 @@
 <template>
     <div>
-        <el-tree :data="menus" :props="defaultProps" show-checkbox node-key="catId" default-expand-all draggable
-            :expand-on-click-node="false" :allow-drop="allowDrop" @node-drop="handleDrop">
+
+        <el-switch v-model="draggable" active-text="开启拖拽" inactive-text="关闭拖拽"></el-switch>
+        <el-button type="danger" @click="batch_delete()" round>批量删除</el-button>
+        <el-tree :data="menus" :props="defaultProps" show-checkbox node-key="catId" default-expand-all ref="tree"
+            :draggable="draggable" :expand-on-click-node="false" :allow-drop="allowDrop" @node-drop="handleDrop">
             <span class="custom-tree-node" slot-scope="{ node, data }">
                 <span>{{ node.label }}</span>
                 <span>
@@ -27,6 +30,7 @@
 export default {
     data() {
         return {
+            draggable: false,
             menus: [],
             defaultProps: {
                 children: 'children',
@@ -40,6 +44,29 @@ export default {
     methods: {
         handleNodeClick(data) {
             console.log(data);
+        },
+
+        batch_delete() {
+            this.$http({
+                url: this.$http.adornUrl('/product/category/batchDelete', 'gateway'),
+                method: 'post',
+                data: this.$http.adornData(this.$refs.tree.getCheckedNodes(), false)
+            }).then(({ data }) => {
+                if (data && data.code === 200) {
+                    this.$message({
+                        message: '操作成功',
+                        type: 'success',
+                        duration: 1500,
+                        onClose: () => {
+                            this.getMenus()
+                        }
+                    })
+                } else {
+                    this.$message.error(data.msg)
+                }
+            })
+
+
         },
 
         edit(data) {
@@ -97,7 +124,6 @@ export default {
         },
 
         handleDrop(draggingNode, dropNode, dropType, ev) {
-            console.log(draggingNode.label, dropNode.label, dropType)
             this.$http({
                 url: this.$http.adornUrl('/product/category/sort', 'gateway'),
                 method: 'post',
@@ -105,7 +131,7 @@ export default {
             }).then(({ data }) => {
                 if (data && data.code === 200) {
                     this.$message({
-                        message: '操作成功',
+                        message: '菜单拖拽成功',
                         type: 'success',
                         duration: 1500,
                         onClose: () => {
