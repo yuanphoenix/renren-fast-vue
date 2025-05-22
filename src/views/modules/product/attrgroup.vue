@@ -60,6 +60,7 @@ export default {
     data() {
         //这里存放数据
         return {
+            catId: 0,
             dataForm: {
                 key: ''
             },
@@ -80,16 +81,11 @@ export default {
         this.getDataList()
     },
     methods: {
-
-
-        nodeClick(data, node, component) {
-            console.log("父组件", data, node, component)
-        },
         // 获取数据列表
         getDataList() {
             this.dataListLoading = true
             this.$http({
-                url: this.$http.adornUrl('/product/attrGroup/list/page', "gateway"),
+                url: this.$http.adornUrl(`/product/attrgroup/list/${this.catId}`, "gateway"),
                 method: 'get',
                 params: this.$http.adornParams({
                     'page': this.pageIndex,
@@ -107,6 +103,16 @@ export default {
                 this.dataListLoading = false
             })
         },
+        nodeClick(data, node, component) {
+            console.log("父组件", data, node, component)
+            if (data.catLevel !== 3) {
+                return
+            }
+
+            this.catId = data.catId
+            this.getDataList()
+        },
+
         // 每页数
         sizeChangeHandle(val) {
             this.pageSize = val
@@ -140,7 +146,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.$http({
-                    url: this.$http.adornUrl('/product/attrGroup/delete', "gateway"),
+                    url: this.$http.adornUrl('/product/attrgroup/delete', "gateway"),
                     method: 'post',
                     data: this.$http.adornData(ids, false)
                 }).then(({ data }) => {

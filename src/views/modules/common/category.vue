@@ -40,6 +40,7 @@ export default {
             })
         },
         nodeClick(data, node, component) {
+            console.log("测试", data, node, component)
             this.$emit("node-click", data, node, component)
         }
 
