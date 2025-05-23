@@ -14,7 +14,8 @@
                     <el-button type="text" size="mini" @click="() => edit(data)">
                         修改
                     </el-button>
-                    <el-button v-if="!data.children.length" type="text" size="mini" @click="() => remove(node, data)">
+                    <el-button v-if="data.leaf" type="text" size="mini"
+                        @click="() => remove(node, data)">
                         删除
                     </el-button>
                 </span>
@@ -24,8 +25,6 @@
 </template>
 
 <script>
-//这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json文件，图片文件等等）
-//例如：import 《组件名称》 from '《组件路径》';
 
 export default {
     data() {
