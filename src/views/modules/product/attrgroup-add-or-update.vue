@@ -1,7 +1,7 @@
 <template>
   <el-dialog :title="!dataForm.attrGroupId ? '新增' : '修改'" :close-on-click-modal="false" :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
-      label-width="80px">
+      label-width="96px">
       <el-form-item label="组名" prop="attrGroupName">
         <el-input v-model="dataForm.attrGroupName" placeholder="组名"></el-input>
       </el-form-item>
@@ -14,12 +14,9 @@
       <el-form-item label="组图标" prop="icon">
         <el-input v-model="dataForm.icon" placeholder="组图标"></el-input>
       </el-form-item>
-      <el-form-item label="所属分类id" prop="catelogId">
+      <el-form-item label="所属分类id" prop="catelogIds">
         <!-- <el-input v-model="dataForm.catelogId" placeholder="所属分类id"></el-input> -->
-
-
-        <el-cascader v-model="value" :options="options" :props="defaultProps">
-
+        <el-cascader v-model="dataForm.catelogIds" :options="options" :props="defaultProps">
         </el-cascader>
 
       </el-form-item>
@@ -35,7 +32,6 @@
 export default {
   data() {
     return {
-      value: [],
       options: [],
       defaultProps: {
         value: "catId",
@@ -49,6 +45,8 @@ export default {
         sort: '',
         descript: '',
         icon: '',
+        // TODO 这里有个大问题，el-cascader会将路径转到catelogIds，但是我们规则校验的是catelogId。所以只能把那条规则删掉了
+        catelogIds: [],
         catelogId: ''
       },
       dataRule: {
@@ -64,19 +62,16 @@ export default {
         icon: [
           { required: true, message: '组图标不能为空', trigger: 'blur' }
         ],
-        catelogId: [
-          { required: true, message: '所属分类id不能为空', trigger: 'blur' }
+        catelogIds: [
+          { required: true, message: "所属分类id不能为空", trigger: "blur" }
         ]
       }
     }
   },
 
-
-
   created() {
     this.getCategorys();
   },
-
 
   methods: {
     getCategorys() {
@@ -104,12 +99,13 @@ export default {
             params: this.$http.adornParams()
           }).then(({ data }) => {
             if (data && data.code === 200) {
+              console.log(data.data)
               this.dataForm.attrGroupName = data.data.attrGroupName
               this.dataForm.sort = data.data.sort
               this.dataForm.descript = data.data.descript
               this.dataForm.icon = data.data.icon
-              this.dataForm.catelogId = data.data.catelogId
-
+              this.dataForm.catelogId = data.data.catelogIds
+              this.dataForm.catelogIds = []
             }
           })
         }
@@ -128,7 +124,7 @@ export default {
               'sort': this.dataForm.sort,
               'descript': this.dataForm.descript,
               'icon': this.dataForm.icon,
-              'catelogId': this.dataForm.catelogId
+              'catelogId': this.dataForm.catelogIds[this.dataForm.catelogIds.length - 1]
             })
           }).then(({ data }) => {
             if (data && data.code === 200) {
