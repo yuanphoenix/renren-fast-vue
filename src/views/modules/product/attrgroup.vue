@@ -30,7 +30,7 @@
                 </el-table-column>
                 <el-table-column prop="icon" header-align="center" align="center" label="组图标">
                 </el-table-column>
-                <el-table-column prop="catelogId" header-align="center" align="center" label="所属分类id">
+                <el-table-column prop="catalogId" header-align="center" align="center" label="所属分类id">
                 </el-table-column>
                 <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
                     <template slot-scope="scope">
