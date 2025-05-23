@@ -30,6 +30,10 @@
 
 <script>
 export default {
+
+  props: {
+    categoryRef: Object
+  },
   data() {
     return {
       options: [],
@@ -104,8 +108,14 @@ export default {
               this.dataForm.sort = data.data.sort
               this.dataForm.descript = data.data.descript
               this.dataForm.icon = data.data.icon
-              this.dataForm.catelogId = data.data.catelogIds
+              this.dataForm.catelogId = data.data.catelogId
               this.dataForm.catelogIds = []
+              const node = this.categoryRef.$refs.tree.getNode(data.data.catelogId)
+              while (node != null) {
+                this.dataForm.catelogIds.push(node.data.catId)
+                node = node.parent
+              }
+              this.dataForm.catelogIds.reverse()
             }
           })
         }

@@ -1,7 +1,7 @@
 <template>
     <el-row :gutter="20">
         <el-col :span="6">
-            <Category @node-click="nodeClick"></Category>
+            <Category @node-click="nodeClick" ref="category"></Category>
         </el-col>
         <el-col :span="18">
             <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
@@ -42,7 +42,8 @@
             </el-table>
         </el-col>
         <!-- 弹窗, 新增 / 修改 -->
-        <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+        <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" :categoryRef="$refs.category"
+            @refreshDataList="getDataList"></add-or-update>
     </el-row>
 
 </template>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-tree :data="menus" :props="defaultProps" node-key="catId" :expand-on-click-node="true"
+        <el-tree :data="menus" ref="tree" :props="defaultProps" node-key="catId" :expand-on-click-node="true"
             @node-click="nodeClick">
         </el-tree>
     </div>
@@ -30,6 +30,9 @@ export default {
     watch: {},
     //方法集合
     methods: {
+        getNodeBykey(id) {
+            return this.$refs.tree.getNode(id)
+        },
 
         getMenus() {
             this.$http({
