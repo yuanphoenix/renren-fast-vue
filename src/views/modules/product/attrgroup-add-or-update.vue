@@ -50,7 +50,6 @@ export default {
         sort: '',
         descript: '',
         icon: '',
-        // TODO 这里有个大问题，el-cascader会将路径转到catalogIds，但是我们规则校验的是catalogId。所以只能把那条规则删掉了
         catalogIds: [],
         catalogId: ''
       },
@@ -84,14 +83,10 @@ export default {
         url: this.$http.adornUrl('/product/category/list/tree', 'gateway'),
         method: 'get',
       }).then(({data}) => {
-        console.log(data)
         this.options = data.data
       })
     },
 
-    handleChange (value) {
-      console.log(value)
-    },
     init (id) {
       this.dataForm.attrGroupId = id || 0
       this.visible = true
