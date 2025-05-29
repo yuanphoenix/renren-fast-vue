@@ -184,7 +184,7 @@ export default {
           method: 'get',
           params: this.$http.adornParams({page: 1, limit: 10})
         }).then(({data}) => {
-          if (data && data.code === 200) {
+          if (data && data.code === 0) {
             console.log(data)
             this.attrGroups = data.data.records
           } else {
@@ -215,7 +215,7 @@ export default {
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            if (data && data.code === 200) {
+            if (data && data.code === 0) {
               console.log(data)
               this.dataForm.attrName = data.data.attrName
               this.dataForm.searchType = data.data.searchType
@@ -260,7 +260,7 @@ export default {
               showDesc: this.dataForm.showDesc
             })
           }).then(({data}) => {
-            if (data && data.code === 200) {
+            if (data && data.code === 0) {
               this.$message({
                 message: '操作成功',
                 type: 'success',

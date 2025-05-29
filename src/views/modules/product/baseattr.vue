@@ -74,13 +74,13 @@
           </el-table-column>
           <el-table-column prop="catalogName" header-align="center" align="center" label="所属分类"></el-table-column>
           <el-table-column
-            v-if="attrtype == 1"
+            v-if="attrtype === 1"
             prop="groupName"
             header-align="center"
             align="center"
             label="所属分组"
           ></el-table-column>
-          <el-table-column v-if="attrtype == 1" prop="showDesc" header-align="center" align="center" label="快速展示">
+          <el-table-column v-if="attrtype === 1" prop="showDesc" header-align="center" align="center" label="快速展示">
             <template slot-scope="scope">
               <i class="el-icon-success" v-if="scope.row.showDesc===1"></i>
               <i class="el-icon-error" v-else></i>
@@ -181,8 +181,6 @@ export default {
         })
       }).then(({data}) => {
         if (data && data.code === 0) {
-          console.log(data)
-
           this.dataList = data.data.records
           this.totalPage = data.data.total
         } else {
