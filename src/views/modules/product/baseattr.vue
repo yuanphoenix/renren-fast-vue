@@ -172,7 +172,7 @@ export default {
       this.dataListLoading = true
       let type = this.attrtype === 0 ? 'sale' : 'base'
       this.$http({
-        url: this.$http.adornUrl(`/product/attr/${type}/list/${this.catId}`, 'gateway'),
+        url: this.$http.gulimalladornUrl(`/product/attr/${type}/list/${this.catId}`, 'gateway'),
         method: 'get',
         params: this.$http.adornParams({
           page: this.pageIndex,
@@ -180,7 +180,7 @@ export default {
           key: this.dataForm.key
         })
       }).then(({data}) => {
-        if (data && data.code === 200) {
+        if (data && data.code === 0) {
           console.log(data)
 
           this.dataList = data.data.records
@@ -231,7 +231,7 @@ export default {
         }
       ).then(() => {
         this.$http({
-          url: this.$http.adornUrl('/product/attr/delete', 'gateway'),
+          url: this.$http.gulimalladornUrl('/product/attr/delete', 'gateway'),
           method: 'post',
           data: this.$http.adornData(ids, false)
         }).then(({data}) => {

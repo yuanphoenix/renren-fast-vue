@@ -46,11 +46,11 @@ export default {
 
     batch_delete () {
       this.$http({
-        url: this.$http.adornUrl('/product/category/batchDelete', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/category/batchDelete', 'gateway'),
         method: 'post',
         data: this.$http.adornData(this.$refs.tree.getCheckedNodes(), false)
       }).then(({data}) => {
-        if (data && data.code === 200) {
+        if (data && data.code === 0) {
           this.$message({
             message: '操作成功',
             type: 'success',
@@ -72,11 +72,11 @@ export default {
       data.name = labelName
 
       this.$http({
-        url: this.$http.adornUrl('/product/category/update', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/category/update', 'gateway'),
         method: 'post',
         data: this.$http.adornData(data, false)
       }).then(({data}) => {
-        if (data && data.code === 200) {
+        if (data && data.code === 0) {
           this.$message({
             message: '操作成功',
             type: 'success',
@@ -101,11 +101,11 @@ export default {
       }
 
       this.$http({
-        url: this.$http.adornUrl('/product/category/save', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/category/save', 'gateway'),
         method: 'post',
         data: this.$http.adornData(newChild, false)
       }).then(({data}) => {
-        if (data && data.code === 200) {
+        if (data && data.code === 0) {
           this.$message({
             message: '操作成功',
             type: 'success',
@@ -122,7 +122,7 @@ export default {
 
     handleDrop (draggingNode, dropNode, dropType, ev) {
       this.$http({
-        url: this.$http.adornUrl('/product/category/sort', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/category/sort', 'gateway'),
         method: 'post',
         data: this.$http.adornData({
           draggingNodeId: draggingNode.data.catId,
@@ -130,7 +130,7 @@ export default {
           dropType: dropType
         }, false)
       }).then(({data}) => {
-        if (data && data.code === 200) {
+        if (data && data.code === 0) {
           this.$message({
             message: '菜单拖拽成功',
             type: 'success',
@@ -150,11 +150,11 @@ export default {
     },
     remove (node, data) {
       this.$http({
-        url: this.$http.adornUrl('/product/category/delete', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/category/delete', 'gateway'),
         method: 'post',
         data: this.$http.adornData(data, false)
       }).then(({data}) => {
-        if (data && data.code === 200) {
+        if (data && data.code === 0) {
           this.$message({
             message: '操作成功',
             type: 'success',
@@ -171,7 +171,7 @@ export default {
 
     getMenus () {
       this.$http({
-        url: this.$http.adornUrl('/product/category/list/tree', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/category/list/tree', 'gateway'),
         method: 'get',
       }).then(({data}) => {
         this.menus = data.data

@@ -178,7 +178,7 @@ export default {
       this.dataForm.catalogId = path[path.length - 1]
       if (path && path.length === 3) {
         this.$http({
-          url: this.$http.adornUrl(
+          url: this.$http.gulimalladornUrl(
             `/product/attrgroup/list/${path[path.length - 1]}`, 'gateway'
           ),
           method: 'get',
@@ -209,7 +209,7 @@ export default {
         this.$refs['dataForm'].resetFields()
         if (this.dataForm.attrId) {
           this.$http({
-            url: this.$http.adornUrl(
+            url: this.$http.gulimalladornUrl(
               `/product/attr/info/${this.dataForm.attrId}`, 'gateway'
             ),
             method: 'get',
@@ -242,7 +242,7 @@ export default {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.$http({
-            url: this.$http.adornUrl(
+            url: this.$http.gulimalladornUrl(
               `/product/attr/${!this.dataForm.attrId ? 'save' : 'update'}`, 'gateway'
             ),
             method: 'post',

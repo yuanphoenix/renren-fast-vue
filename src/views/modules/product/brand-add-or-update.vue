@@ -94,13 +94,13 @@ export default {
           }
         ]
       }
-    }     
+    }
   },
   methods: {
     customUpload(file) {
       const uploadHost = "https://gulimall--tifa.oss-cn-beijing.aliyuncs.com";
       this.$http({
-        url: this.$http.adornUrl('/oss/get_post_signature_for_oss_upload', 'gateway'),
+        url: this.$http.gulimalladornUrl('/oss/get_post_signature_for_oss_upload', 'gateway'),
         method: "get"
       }).then(({ data }) => {
         console.log(data)
@@ -167,11 +167,11 @@ export default {
 
         if (this.dataForm.brandId) {
           this.$http({
-            url: this.$http.adornUrl(`/product/brand/info/${this.dataForm.brandId}`, "gateway"),
+            url: this.$http.gulimalladornUrl(`/product/brand/info/${this.dataForm.brandId}`, "gateway"),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({ data }) => {
-            if (data && data.code === 200) {
+            if (data && data.code === 0) {
               this.dataForm.name = data.data.name
               this.dataForm.logo = data.data.logo
               this.fileList = data.data.name
@@ -197,7 +197,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.$http({
-            url: this.$http.adornUrl(`/product/brand/${!this.dataForm.brandId ? 'save' : 'update'}`, "gateway"),
+            url: this.$http.gulimalladornUrl(`/product/brand/${!this.dataForm.brandId ? 'save' : 'update'}`, "gateway"),
             method: 'post',
             data: this.$http.adornData({
               'brandId': this.dataForm.brandId || undefined,
@@ -209,7 +209,7 @@ export default {
               'sort': this.dataForm.sort
             })
           }).then(({ data }) => {
-            if (data && data.code === 200) {
+            if (data && data.code === 0) {
               this.$message({
                 message: '操作成功',
                 type: 'success',

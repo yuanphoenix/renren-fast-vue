@@ -36,7 +36,7 @@ export default {
 
         getMenus() {
             this.$http({
-                url: this.$http.adornUrl('/product/category/list/tree', "gateway"),
+                url: this.$http.gulimalladornUrl('/product/category/list/tree', "gateway"),
                 method: 'get',
             }).then(({ data }) => {
                 this.menus = data.data

@@ -86,7 +86,7 @@
 
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-//例如：import 《组件名称》 from '《组件路径》';
+//例如：import 《组件名称》 from '《组件路径》';
 
 export default {
   //import引入的组件需要注入到对象中才能使用
@@ -111,7 +111,7 @@ export default {
       innerdataListSelections: []
     }
   },
-  //计算属性 类似于data概念
+  //计算属性 类似于data概念
   computed: {},
   //监控data中的数据变化
   watch: {},
@@ -133,11 +133,11 @@ export default {
         postData.push({attrId: item.attrId, attrGroupId: this.attrGroupId})
       })
       this.$http({
-        url: this.$http.adornUrl('/product/attrgroup/attr/relation/delete', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/attrgroup/attr/relation/delete', 'gateway'),
         method: 'post',
         data: this.$http.adornData(postData, false)
       }).then(({data}) => {
-        if (data.code == 0) {
+        if (data.code === 0) {
           this.$message({type: 'success', message: '删除成功'})
           this.init(this.attrGroupId)
         } else {
@@ -150,11 +150,11 @@ export default {
       let data = []
       data.push({attrId, attrGroupId: this.attrGroupId})
       this.$http({
-        url: this.$http.adornUrl('/product/attrgroup/attr/relation/delete', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/attrgroup/attr/relation/delete', 'gateway'),
         method: 'post',
         data: this.$http.adornData(data, false)
       }).then(({data}) => {
-        if (data.code == 0) {
+        if (data.code === 0) {
           this.$message({type: 'success', message: '删除成功'})
           this.init(this.attrGroupId)
         } else {
@@ -172,11 +172,11 @@ export default {
           postData.push({attrId: item.attrId, attrGroupId: this.attrGroupId})
         })
         this.$http({
-          url: this.$http.adornUrl('/product/attrgroup/attr/relation', 'gateway'),
+          url: this.$http.gulimalladornUrl('/product/attrgroup/attr/relation', 'gateway'),
           method: 'post',
           data: this.$http.adornData(postData, false)
         }).then(({data}) => {
-          if (data.code == 0) {
+          if (data.code === 0) {
             this.$message({type: 'success', message: '新增关联成功'})
           }
           this.$emit('refreshData')
@@ -189,7 +189,7 @@ export default {
       this.attrGroupId = id || 0
       this.visible = true
       this.$http({
-        url: this.$http.adornUrl(
+        url: this.$http.gulimalladornUrl(
           '/product/attrgroup/' + this.attrGroupId + '/attr/relation', 'gateway'
         ),
         method: 'get',
@@ -206,7 +206,7 @@ export default {
     getDataList () {
       this.dataListLoading = true
       this.$http({
-        url: this.$http.adornUrl(
+        url: this.$http.gulimalladornUrl(
           '/product/attrgroup/' + this.attrGroupId + '/noattr/relation', 'gateway'
         ),
         method: 'get',

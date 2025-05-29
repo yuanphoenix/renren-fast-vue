@@ -3,7 +3,7 @@ import axios from 'axios'
 import router from '@/router'
 import qs from 'qs'
 import merge from 'lodash/merge'
-import { clearLoginInfo } from '@/utils'
+import {clearLoginInfo} from '@/utils'
 
 const http = axios.create({
   timeout: 1000 * 30,
@@ -29,7 +29,7 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(response => {
   if (response.data && response.data.code === 401) { // 401, token失效
     clearLoginInfo()
-    router.push({ name: 'login' })
+    router.push({name: 'login'})
   }
   return response
 }, error => {
@@ -55,6 +55,21 @@ http.adornUrl = (actionName, type = 'default') => {
   }
 }
 
+/**
+ * 拼接请求地址
+ * @param {string} actionName 接口路径，如：/category/list
+ * @param {string} type 可选，指定 baseUrl 类型，例如 'product', 'user'
+ */
+http.gulimalladornUrl = (actionName, type = '') => {
+
+  let baseUrl = window.SITE_CONFIG.gateway
+
+  if (process.env.NODE_ENV !== 'production' && process.env.OPEN_PROXY) {
+    return '/proxyApi/' + actionName
+  } else {
+    return baseUrl + actionName
+  }
+}
 
 /**
  * get请求参数处理

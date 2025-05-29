@@ -80,7 +80,7 @@ export default {
   methods: {
     getCategorys () {
       this.$http({
-        url: this.$http.adornUrl('/product/category/list/tree', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/category/list/tree', 'gateway'),
         method: 'get',
       }).then(({data}) => {
         this.options = data.data
@@ -94,11 +94,11 @@ export default {
         this.$refs['dataForm'].resetFields()
         if (this.dataForm.attrGroupId) {
           this.$http({
-            url: this.$http.adornUrl(`/product/attrgroup/info/${this.dataForm.attrGroupId}`, 'gateway'),
+            url: this.$http.gulimalladornUrl(`/product/attrgroup/info/${this.dataForm.attrGroupId}`, 'gateway'),
             method: 'get',
             params: this.$http.adornParams()
           }).then(({data}) => {
-            if (data && data.code === 200) {
+            if (data && data.code === 0) {
               console.log(data.data)
               this.dataForm.attrGroupName = data.data.attrGroupName
               this.dataForm.sort = data.data.sort
@@ -122,7 +122,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.$http({
-            url: this.$http.adornUrl(`/product/attrgroup/${!this.dataForm.attrGroupId ? 'save' : 'update'}`, 'gateway'),
+            url: this.$http.gulimalladornUrl(`/product/attrgroup/${!this.dataForm.attrGroupId ? 'save' : 'update'}`, 'gateway'),
             method: 'post',
             data: this.$http.adornData({
               'attrGroupId': this.dataForm.attrGroupId || undefined,
@@ -133,7 +133,7 @@ export default {
               'catalogId': this.dataForm.catalogIds[this.dataForm.catalogIds.length - 1]
             })
           }).then(({data}) => {
-            if (data && data.code === 200) {
+            if (data && data.code === 0) {
               this.$message({
                 message: '操作成功',
                 type: 'success',

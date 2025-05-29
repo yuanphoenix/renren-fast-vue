@@ -110,7 +110,7 @@ export default {
     getDataList () {
       this.dataListLoading = true
       this.$http({
-        url: this.$http.adornUrl(`/product/attrgroup/list/${this.catId}`, 'gateway'),
+        url: this.$http.gulimalladornUrl(`/product/attrgroup/list/${this.catId}`, 'gateway'),
         method: 'get',
         params: this.$http.adornParams({
           'page': this.pageIndex,
@@ -118,7 +118,7 @@ export default {
           'key': this.dataForm.key
         })
       }).then(({data}) => {
-        if (data && data.code === 200) {
+        if (data && data.code === 0) {
           this.dataList = data.data.records
           this.totalPage = data.data.total
         } else {
@@ -171,11 +171,11 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$http({
-          url: this.$http.adornUrl('/product/attrgroup/delete', 'gateway'),
+          url: this.$http.gulimalladornUrl('/product/attrgroup/delete', 'gateway'),
           method: 'post',
           data: this.$http.adornData(ids, false)
         }).then(({data}) => {
-          if (data && data.code === 200) {
+          if (data && data.code === 0) {
             this.$message({
               message: '操作成功',
               type: 'success',

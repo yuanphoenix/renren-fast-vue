@@ -125,7 +125,7 @@ export default {
       //{"brandId":1,"catalogId":2}
       this.popCatalogSelectVisible = false
       this.$http({
-        url: this.$http.adornUrl('/product/categorybrandrelation/save', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/categorybrandrelation/save', 'gateway'),
         method: 'post',
         data: this.$http.adornData({
           brandId: this.brandId,
@@ -137,7 +137,7 @@ export default {
     },
     deleteCateRelationHandle (id, brandId) {
       this.$http({
-        url: this.$http.adornUrl(`/product/categorybrandrelation/delete/${id}`, 'gateway'),
+        url: this.$http.gulimalladornUrl(`/product/categorybrandrelation/delete/${id}`, 'gateway'),
         method: 'post'
       }).then(({data}) => {
         this.getCateRelation()
@@ -152,7 +152,7 @@ export default {
     getCateRelation () {
       // 这是关联第二步进入的函数
       this.$http({
-        url: this.$http.adornUrl('/product/categorybrandrelation/catalog/list', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/categorybrandrelation/catalog/list', 'gateway'),
         method: 'get',
         params: this.$http.adornParams({
           brandId: this.brandId
@@ -165,11 +165,11 @@ export default {
     updateStatus (data) {
       let {brandId, showStatus} = data
       this.$http({
-        url: this.$http.adornUrl('/product/brand/update', 'gateway', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/brand/update', 'gateway', 'gateway'),
         method: 'post',
         data: this.$http.adornData({brandId, showStatus}, false)
       }).then(({data}) => {
-        if (data && data.code === 200) {
+        if (data && data.code === 0) {
           this.getDataList()
         } else {
           this.$message.error(data.msg)
@@ -180,7 +180,7 @@ export default {
     getDataList () {
       this.dataListLoading = true
       this.$http({
-        url: this.$http.adornUrl('/product/brand/list/page', 'gateway'),
+        url: this.$http.gulimalladornUrl('/product/brand/list/page', 'gateway'),
         method: 'get',
         params: this.$http.adornParams({
           'page': this.pageIndex,
@@ -188,7 +188,7 @@ export default {
           'key': this.dataForm.key
         })
       }).then(({data}) => {
-        if (data && data.code === 200) {
+        if (data && data.code === 0) {
           this.dataList = data.data.records
           this.totalPage = data.data.total
         } else {
@@ -232,11 +232,11 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$http({
-          url: this.$http.adornUrl('/product/brand/delete', 'gateway'),
+          url: this.$http.gulimalladornUrl('/product/brand/delete', 'gateway'),
           method: 'post',
           data: this.$http.adornData(ids, false)
         }).then(({data}) => {
-          if (data && data.code === 200) {
+          if (data && data.code === 0) {
             this.$message({
               message: '操作成功',
               type: 'success',
