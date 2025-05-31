@@ -18,10 +18,14 @@
             @selection-change="innerSelectionChangeHandle"
             style="width: 100%;"
           >
-            <el-table-column type="selection" header-align="center" align="center"></el-table-column>
-            <el-table-column prop="attrId" header-align="center" align="center" label="属性id"></el-table-column>
-            <el-table-column prop="attrName" header-align="center" align="center" label="属性名"></el-table-column>
-            <el-table-column prop="icon" header-align="center" align="center" label="属性图标"></el-table-column>
+            <el-table-column type="selection" header-align="center"
+                             align="center"></el-table-column>
+            <el-table-column prop="attrId" header-align="center" align="center"
+                             label="属性id"></el-table-column>
+            <el-table-column prop="attrName" header-align="center" align="center"
+                             label="属性名"></el-table-column>
+            <el-table-column prop="icon" header-align="center" align="center"
+                             label="属性图标"></el-table-column>
             <el-table-column prop="valueSelect" header-align="center" align="center"
                              label="可选值列表"></el-table-column>
           </el-table>
@@ -31,7 +35,7 @@
             :current-page="pageIndex"
             :page-sizes="[10, 20, 50, 100]"
             :page-size="pageSize"
-            :total="totalPage"
+            :total="totalSize"
             layout="total, sizes, prev, pager, next, jumper"
           ></el-pagination>
         </div>
@@ -56,7 +60,8 @@
             @selection-change="selectionChangeHandle"
             border
           >
-            <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
+            <el-table-column type="selection" header-align="center" align="center"
+                             width="50"></el-table-column>
             <el-table-column prop="attrId" label="#"></el-table-column>
             <el-table-column prop="attrName" label="属性名"></el-table-column>
             <el-table-column prop="valueSelect" label="可选值">
@@ -74,7 +79,8 @@
             </el-table-column>
             <el-table-column fixed="right" header-align="center" align="center" label="操作">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="relationRemove(scope.row.attrId)">移除</el-button>
+                <el-button type="text" size="small" @click="relationRemove(scope.row.attrId)">移除
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -106,7 +112,7 @@ export default {
       dataList: [],
       pageIndex: 1,
       pageSize: 10,
-      totalPage: 0,
+      totalSize: 0,
       dataListLoading: false,
       innerdataListSelections: []
     }
@@ -217,11 +223,11 @@ export default {
         })
       }).then(({data}) => {
         if (data && data.code === 0) {
-          this.dataList = data.page.list
-          this.totalPage = data.page.totalCount
+          this.dataList = data.page.records
+          this.totalSize = data.page.total
         } else {
           this.dataList = []
-          this.totalPage = 0
+          this.totalSize = 0
         }
         this.dataListLoading = false
       })

@@ -26,7 +26,8 @@
               <brand-select></brand-select>
             </el-form-item>
             <el-form-item label="商品重量(Kg)" prop="weight">
-              <el-input-number v-model.number="spu.weight" :min="0" :precision="3" :step="0.1"></el-input-number>
+              <el-input-number v-model.number="spu.weight" :min="0" :precision="3"
+                               :step="0.1"></el-input-number>
             </el-form-item>
             <el-form-item label="设置积分" prop="bounds">
               <label>金币</label>
@@ -485,12 +486,12 @@ export default {
           limit: 500
         })
       })
-        .then(({data}) => {
-          this.dataResp.memberLevels = data.page.list
-        })
-        .catch(e => {
-          console.log(e)
-        })
+      .then(({data}) => {
+        this.dataResp.memberLevels = data.page.records
+      })
+      .catch(e => {
+        console.log(e)
+      })
     },
     showInput (idx) {
       console.log('``````', this.view)
@@ -655,8 +656,8 @@ export default {
             limit: 500
           })
         }).then(({data}) => {
-          this.dataResp.saleAttrs = data.page.list
-          data.page.list.forEach(item => {
+          this.dataResp.saleAttrs = data.page.records
+          data.page.records.forEach(item => {
             this.dataResp.tempSaleAttrs.push({
               attrId: item.attrId,
               attrValues: [],
@@ -703,33 +704,33 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       })
-        .then(() => {
-          this.$http({
-            url: this.$http.gulimalladornUrl('/product/spuinfo/save', 'gateway'),
-            method: 'post',
-            data: this.$http.adornData(this.spu, false)
-          }).then(({data}) => {
-            if (data.code === 0) {
-              this.$message({
-                type: 'success',
-                message: '新增商品成功!'
-              })
-              this.step = 4
-            } else {
-              this.$message({
-                type: 'error',
-                message: '保存失败，原因【' + data.msg + '】'
-              })
-            }
-          })
+      .then(() => {
+        this.$http({
+          url: this.$http.gulimalladornUrl('/product/spuinfo/save', 'gateway'),
+          method: 'post',
+          data: this.$http.adornData(this.spu, false)
+        }).then(({data}) => {
+          if (data.code === 0) {
+            this.$message({
+              type: 'success',
+              message: '新增商品成功!'
+            })
+            this.step = 4
+          } else {
+            this.$message({
+              type: 'error',
+              message: '保存失败，原因【' + data.msg + '】'
+            })
+          }
         })
-        .catch(e => {
-          console.log(e)
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          })
+      })
+      .catch(e => {
+        console.log(e)
+        this.$message({
+          type: 'info',
+          message: '已取消'
         })
+      })
     },
     //笛卡尔积运算
     descartes (list) {
@@ -787,7 +788,7 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created () {
   },
-  //生命周期 - 挂载完成（可以访问DOM元素）
+  //生命周期 挂载完成（可以访问DOM元素）
   mounted () {
     this.catPathSub = PubSub.subscribe('catPath', (msg, val) => {
       this.spu.catalogId = val[val.length - 1]

@@ -186,7 +186,7 @@ export default {
         }).then(({data}) => {
           if (data && data.code === 0) {
             console.log(data)
-            this.attrGroups = data.data.records
+            this.attrGroups = data.page.records
           } else {
             this.$message.error(data.msg)
           }
