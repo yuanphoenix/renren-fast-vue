@@ -62,7 +62,7 @@ http.adornUrl = (actionName, type = 'default') => {
  */
 http.gulimalladornUrl = (actionName, type = '') => {
 
-  let baseUrl = window.SITE_CONFIG.gateway
+  let baseUrl = window.SITE_CONFIG.baseUrl
 
   if (process.env.NODE_ENV !== 'production' && process.env.OPEN_PROXY) {
     return '/proxyApi/' + actionName
