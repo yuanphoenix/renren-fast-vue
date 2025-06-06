@@ -1,7 +1,8 @@
-<template> 
+<template>
   <div>
     <el-upload
-      action="http://gulimall-wan.oss-cn-shanghai.aliyuncs.com"
+      action="#"
+      :http-request="customUpload"
       :data="dataObj"
       list-type="picture"
       :multiple="false" :show-file-list="showFileList"
@@ -19,90 +20,119 @@
   </div>
 </template>
 <script>
-   import {policy} from './policy'
-   import { getUUID } from '@/utils'
+import {policy} from './policy'
+import {getUUID} from '@/utils'
 
-  export default {
-    name: 'singleUpload',
-    props: {
-      value: String
+export default {
+  name: 'singleUpload',
+  props: {
+    value: String
+  },
+  computed: {
+    imageUrl () {
+      return this.value
     },
-    computed: {
-      imageUrl() {
-        return this.value;
-      },
-      imageName() {
-        if (this.value != null && this.value !== '') {
-          return this.value.substr(this.value.lastIndexOf("/") + 1);
-        } else {
-          return null;
-        }
-      },
-      fileList() {
-        return [{
-          name: this.imageName,
-          url: this.imageUrl
-        }]
-      },
-      showFileList: {
-        get: function () {
-          return this.value !== null && this.value !== ''&& this.value!==undefined;
-        },
-        set: function (newValue) {
-        }
+    imageName () {
+      if (this.value != null && this.value !== '') {
+        return this.value.substr(this.value.lastIndexOf('/') + 1)
+      } else {
+        return null
       }
     },
-    data() {
-      return {
-        dataObj: {
-          policy: '',
-          signature: '',
-          key: '',
-          ossaccessKeyId: '',
-          dir: '',
-          host: '',
-          // callback:'',
-        },
-        dialogVisible: false
-      };
+    fileList () {
+      return [{
+        name: this.imageName,
+        url: this.imageUrl
+      }]
     },
-    methods: {
-      emitInput(val) {
-        this.$emit('input', val)
+    showFileList: {
+      get: function () {
+        return this.value !== null && this.value !== '' && this.value !== undefined
       },
-      handleRemove(file, fileList) {
-        this.emitInput('');
-      },
-      handlePreview(file) {
-        this.dialogVisible = true;
-      },
-      beforeUpload(file) {
-        let _self = this;
-        return new Promise((resolve, reject) => {
-          policy().then(response => {
-            console.log("响应的数据",response);
-            _self.dataObj.policy = response.data.policy;
-            _self.dataObj.signature = response.data.signature;
-            _self.dataObj.ossaccessKeyId = response.data.accessid;
-            _self.dataObj.key = response.data.dir +getUUID()+'_${filename}';
-            _self.dataObj.dir = response.data.dir;
-            _self.dataObj.host = response.data.host;
-            console.log("响应的数据222。。。",_self.dataObj);
-            resolve(true)
-          }).catch(err => {
-            reject(false)
-          })
-        })
-      },
-      handleUploadSuccess(res, file) {
-        console.log("上传成功...")
-        this.showFileList = true;
-        this.fileList.pop();
-        this.fileList.push({name: file.name, url: this.dataObj.host + '/' + this.dataObj.key.replace("${filename}",file.name) });
-        this.emitInput(this.fileList[0].url);
+      set: function (newValue) {
       }
     }
+  },
+  data () {
+    return {
+      dataObj: {
+        policy: '',
+        signature: '',
+        key: '',
+        ossaccessKeyId: '',
+        dir: '',
+        host: '',
+        // callback:'',
+      },
+      dialogVisible: false
+    }
+  },
+  methods: {
+
+    customUpload (file) {
+      const uploadHost = 'https://gulimall--tifa.oss-cn-beijing.aliyuncs.com'
+      this.$http({
+        url: this.$http.gulimalladornUrl('/oss/get_post_signature_for_oss_upload', 'gateway'),
+        method: 'get'
+      }).then(({data}) => {
+        const objectKey = `${data.dir}${data.key}${file.file.name}`
+
+        let formData = new FormData()
+        formData.append('success_action_status', '200')
+        formData.append('policy', data.policy)
+        formData.append('x-oss-signature', data.signature)
+        formData.append('x-oss-signature-version', 'OSS4-HMAC-SHA256')
+        formData.append('x-oss-credential', data.x_oss_credential)
+        formData.append('x-oss-date', data.x_oss_date)
+        formData.append('key', objectKey) // 文件名
+        formData.append('x-oss-security-token', data.security_token)
+        formData.append('file', file.file) // file 必须为最后一个表单域
+
+        fetch('https://gulimall--tifa.oss-cn-beijing.aliyuncs.com', {
+          method: 'POST',
+          body: formData
+        }).then((response) => {
+          console.log(response)
+          if (response.status === 200) {
+            this.$message({
+              message: '上传成功',
+              type: 'success',
+              duration: 1500,
+            })
+            file.onSuccess(uploadHost + '/' + objectKey, file)
+          } else {
+            this.$message.error('上传失败')
+          }
+        })
+
+      })
+
+    },
+
+    emitInput (val) {
+      this.$emit('input', val)
+    },
+    handleRemove (file, fileList) {
+      this.emitInput('')
+    },
+    handlePreview (file) {
+      this.dialogVisible = true
+    },
+    beforeUpload (file) {
+
+    },
+    handleUploadSuccess (res, file) {
+      console.log('上传成功...')
+      this.showFileList = true
+      this.fileList.pop()
+      this.fileList.push({
+        name: file.name,
+        url: this.dataObj.host + '/' + this.dataObj.key.replace('${filename}', file.name)
+      })
+      this.emitInput(this.fileList[0].url)
+    }
   }
+}
 </script>
 <style>
 

@@ -350,7 +350,7 @@
 
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-//例如：import 《组件名称》 from '《组件路径》';
+//例如：import《组件名称》from'《组件路径》';
 import CategoryCascader from '../common/category-cascader'
 import BrandSelect from '../common/brand-select'
 import MultiUpload from '@/components/upload/multiUpload'
@@ -399,12 +399,12 @@ export default {
         brandId: [
           {required: true, message: '请选择一个品牌', trigger: 'blur'}
         ],
-        decript: [
-          {required: true, message: '请上传商品详情图集', trigger: 'blur'}
-        ],
-        images: [
-          {required: true, message: '请上传商品图片集', trigger: 'blur'}
-        ],
+        // decript: [
+        //   {required: true, message: '请上传商品详情图集', trigger: 'blur'}
+        // ],
+        // images: [
+        //   {required: true, message: '请上传商品图片集', trigger: 'blur'}
+        // ],
         weight: [
           {
             type: 'number',

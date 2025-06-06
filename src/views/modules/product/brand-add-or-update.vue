@@ -103,7 +103,7 @@ export default {
         url: this.$http.gulimalladornUrl('/oss/get_post_signature_for_oss_upload', 'gateway'),
         method: "get"
       }).then(({ data }) => {
-        console.log(data)
+
         const objectKey = `${data.dir}${data.key}${file.file.name}`;
 
         let formData = new FormData();
