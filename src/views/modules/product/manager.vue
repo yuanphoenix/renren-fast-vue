@@ -3,7 +3,7 @@
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form :inline="true" :model="dataForm">
         <el-form-item label="分类">
-          <category-cascader :catelogPath.sync="catelogPath"></category-cascader>
+          <category-cascader :catalogPath.sync="catalogPath"></category-cascader>
         </el-form-item>
         <el-form-item label="品牌">
           <brand-select style="width:160px"></brand-select>
@@ -102,11 +102,11 @@ export default {
       brandIdSub: null,
       dataForm: {
         key: '',
-        brandId: 0,
-        catalogId: 0,
+        brandId: null,
+        catalogId: null,
         price: {
-          min: 0,
-          max: 0
+          min: null,
+          max: null
         }
       },
       dataList: [],
