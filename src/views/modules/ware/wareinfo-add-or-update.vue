@@ -58,9 +58,9 @@
               params: this.$http.adornParams()
             }).then(({data}) => {
               if (data && data.code === 0) {
-                this.dataForm.name = data.wareInfo.name
-                this.dataForm.address = data.wareInfo.address
-                this.dataForm.areacode = data.wareInfo.areacode
+                this.dataForm.name = data.data.name
+                this.dataForm.address = data.data.address
+                this.dataForm.areacode = data.data.areacode
               }
             })
           }
