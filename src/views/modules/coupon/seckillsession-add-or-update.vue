@@ -15,10 +15,10 @@
         <el-input v-model="dataForm.name" placeholder="场次名称"></el-input>
       </el-form-item>
       <el-form-item label="每日开始时间" prop="startTime">
-        <el-date-picker type="datetime" placeholder="每日开始时间" v-model="dataForm.startTime"></el-date-picker>
+        <el-date-picker type="datetime" placeholder="每日开始时间" value-format="yyyy-MM-dd HH:mm:ss" v-model="dataForm.startTime"></el-date-picker>
       </el-form-item>
       <el-form-item label="每日结束时间" prop="endTime">
-        <el-date-picker type="datetime" placeholder="每日结束时间" v-model="dataForm.endTime"></el-date-picker>
+        <el-date-picker type="datetime" placeholder="每日结束时间"  value-format="yyyy-MM-dd HH:mm:ss" v-model="dataForm.endTime"></el-date-picker>
       </el-form-item>
       <el-form-item label="启用状态" prop="status">
         <el-input v-model="dataForm.status" placeholder="启用状态"></el-input>
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import fa from "element-ui/src/locale/lang/fa";
+
 export default {
   data() {
     return {
@@ -46,16 +48,16 @@ export default {
       },
       dataRule: {
         name: [
-          { required: true, message: "场次名称不能为空", trigger: "blur" }
+          {required: true, message: "场次名称不能为空", trigger: "blur"}
         ],
         startTime: [
-          { required: true, message: "每日开始时间不能为空", trigger: "blur" }
+          {required: true, message: "每日开始时间不能为空", trigger: "blur"}
         ],
         endTime: [
-          { required: true, message: "每日结束时间不能为空", trigger: "blur" }
+          {required: true, message: "每日结束时间不能为空", trigger: "blur"}
         ],
         status: [
-          { required: true, message: "启用状态不能为空", trigger: "blur" }
+          {required: true, message: "启用状态不能为空", trigger: "blur"}
         ]
       }
     };
@@ -73,7 +75,7 @@ export default {
             ),
             method: "get",
             params: this.$http.adornParams()
-          }).then(({ data }) => {
+          }).then(({data}) => {
             if (data && data.code === 0) {
               this.dataForm.name = data.seckillSession.name;
               this.dataForm.startTime = data.seckillSession.startTime;
@@ -100,9 +102,8 @@ export default {
               startTime: this.dataForm.startTime,
               endTime: this.dataForm.endTime,
               status: this.dataForm.status,
-              createTime: new Date()
-            })
-          }).then(({ data }) => {
+            }, false)
+          }).then(({data}) => {
             if (data && data.code === 0) {
               this.$message({
                 message: "操作成功",
